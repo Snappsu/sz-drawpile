@@ -4,7 +4,7 @@ services:
         container_name: drawpile-server
         image: drawpile/drawpile-srv:${DP_VERSION:-2.3}
         command:
-            --sessions /home/drawpile/sessions
+            --sessions /var/sessions
             --database /home/drawpile/config.db
             --web-admin-port 27780
             --web-admin-access all
@@ -17,7 +17,7 @@ services:
         ports:
             - "27750:27750"
         volumes:
-            - /home/drawpile/server-data:/home/drawpile
+            - /home/drawpile/sessions:/var/sessions
             - /home/drawpile/session-templates:/var/session-templates
         networks:
             dpserver:

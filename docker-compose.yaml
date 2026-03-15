@@ -62,6 +62,7 @@ services:
             DOMAIN: ${DOMAIN}
             EMAIL: ${EMAIL}
             USE_CERTBOT: ${USE_CERTBOT:-no}
+            SITE_GIT: ${SITE_GIT:-no}
         restart: unless-stopped
         ports:
             - "80:80"

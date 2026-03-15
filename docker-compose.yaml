@@ -4,11 +4,11 @@ services:
         container_name: drawpile-server
         image: drawpile/drawpile-srv:${DP_VERSION:-2.3}
         command:
-            --sessions /var/sessions
-            --database /home/drawpile/config.db
+            --sessions /home/drawpile/sessions
+            --database /home/drawpile/config/config.db
+            --templates /var/session-templates
             --web-admin-port 27780
             --web-admin-access all
-            --templates /var/session-templates
             --local-host ${DOMAIN}
             --report-url http://abusereport:8080/
             --websocket-port 27751
@@ -16,8 +16,10 @@ services:
         restart: always
         ports:
             - "27750:27750"
+            - "27751:27751"
         volumes:
-            - ./sessions:/var/sessions
+            - ./server-data:/home/drawpile/config
+            - ./sessions:/home/drawpile/sessions
             - ./session-templates:/var/session-templates
         networks:
             dpserver:

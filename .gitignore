@@ -1,3 +1,2 @@
 .env
 web-server/nginx-config/htpasswd
-server-data/config.db

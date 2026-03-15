@@ -17,8 +17,8 @@ services:
         ports:
             - "27750:27750"
         volumes:
-            - /home/drawpile/sessions:/var/sessions
-            - /home/drawpile/session-templates:/var/session-templates
+            - ./sessions:/var/sessions
+            - ./session-templates:/var/session-templates
         networks:
             dpserver:
                 ipv4_address: 172.18.0.2
@@ -29,7 +29,7 @@ services:
         command:
             -c /srv/listserver.cfg
         volumes:
-            - /home/drawpile/server-data:/srv
+            - ./server-data:/srv
         restart: always
         networks:
             dpserver:
@@ -68,9 +68,9 @@ services:
             - "443:443"
             - "443:443/udp"
         volumes:
-            - /home/drawpile/web-server/certs:/etc/certbot
-            - /home/drawpile/web-server/site:/var/www/public_html
-            - /home/drawpile/web-server/nginx-config:/etc/nginx/conf.d
+            - ./web-server/certs:/etc/certbot
+            - ./web-server/site:/var/www/public_html
+            - ./web-server/nginx-config:/etc/nginx/conf.d
         networks:
             dpserver:
               ipv4_address: 172.18.0.4

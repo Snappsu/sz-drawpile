@@ -1,0 +1,84 @@
+version: '3.3'
+services:
+    drawpile-srv:
+        container_name: drawpile-server
+        image: drawpile/drawpile-srv:${DP_VERSION:-2.3}
+        command:
+            --sessions /home/drawpile/sessions
+            --database /home/drawpile/config.db
+            --web-admin-port 27780
+            --web-admin-access all
+            --templates /var/session-templates
+            --local-host ${DOMAIN}
+            --report-url http://abusereport:8080/
+            --websocket-port 27751
+            --extauth https://api.snapples64.workers.dev/drawpile/login
+        restart: always
+        ports:
+            - "27750:27750"
+        volumes:
+            - /home/drawpile/server-data:/home/drawpile
+            - /home/drawpile/session-templates:/var/session-templates
+        networks:
+            dpserver:
+                ipv4_address: 172.18.0.2
+
+    listserver:
+        container_name: drawpile-listserver
+        image: drawpile/listserver:${LISTSERVER_VERSION:-1}
+        command:
+            -c /srv/listserver.cfg
+        volumes:
+            - /home/drawpile/server-data:/srv
+        restart: always
+        networks:
+            dpserver:
+                ipv4_address: 172.18.0.3
+        environment:
+            LS_INCLUDESERVERS: http://drawpile-srv:27780/api
+            LS_DATABASE: none
+            LS_NAME: ${DOMAIN}
+            LS_PROXYHEADERS: "true"
+
+    abusereport:
+        container_name: drawpile-abusereport
+        image: drawpile/abusereport:${ABUSEREPORT_VERSION:-1}
+        restart: always
+        networks:
+            dpserver:
+                ipv4_address: 172.18.0.5
+        environment:
+            SERVER_HOST: ${DOMAIN}
+            DISCORD_WEBHOOK: ${DISCORD_WEBHOOK}
+
+    nginx:
+        container_name: drawpile-nginx
+        build:
+            context: ./setup/nginx
+            args:
+                - DOMAIN
+                - EMAIL
+        environment:
+            DOMAIN: ${DOMAIN}
+            EMAIL: ${EMAIL}
+            USE_CERTBOT: ${USE_CERTBOT:-no}
+        restart: unless-stopped
+        ports:
+            - "80:80"
+            - "443:443"
+            - "443:443/udp"
+        volumes:
+            - /home/drawpile/web-server/certs:/etc/certbot
+            - /home/drawpile/web-server/site:/var/www/public_html
+            - /home/drawpile/web-server/nginx-config:/etc/nginx/conf.d
+        networks:
+            dpserver:
+              ipv4_address: 172.18.0.4
+
+networks:
+    dpserver:
+      ipam:
+        driver: default
+        config:
+          - subnet: 172.18.0.0/16
+            gateway: 172.18.0.1

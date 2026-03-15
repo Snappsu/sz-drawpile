@@ -23,3 +23,4 @@ things to do:
 - `USE_CERTBOT`: yes or no
 - `EMAIL`: email for... something important im sure
 - `DISCORD_WEBHOOK`: for the abuse report thingy
+- `SITE_GIT`: .git for the webpage of the server

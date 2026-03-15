@@ -11,11 +11,12 @@ then
 fi
 
 apk add git
+mkdir temp
 git clone "$SITE_GIT" temp
 cd temp
 rm -rf .git
 cd ..
-mv temp /var/www/public_html/
+mv temp/* /var/www/public_html/
 rm -rf temp
 
 exec nginx -g "daemon off;"

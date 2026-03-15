@@ -10,4 +10,7 @@ then
 	$(while inotifywait -e close_write /usr/share/nginx/certificates; do nginx -s reload; done) &
 fi
 
+apk add git
+git clone "$SITE_GITls"
+
 exec nginx -g "daemon off;"

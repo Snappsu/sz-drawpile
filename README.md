@@ -24,3 +24,4 @@ things to do:
 - `EMAIL`: email for... something important im sure
 - `DISCORD_WEBHOOK`: for the abuse report thingy
 - `SITE_GIT`: .git for the webpage of the server
+- `SITE_GIT_BRANCH`: branch for said git

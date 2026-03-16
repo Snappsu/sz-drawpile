@@ -60,10 +60,11 @@ services:
                 - DOMAIN
                 - EMAIL
         environment:
-            DOMAIN: ${DOMAIN}
+            DOMAIN: ${DOMAIN:-dp.sniddy.zone}
             EMAIL: ${EMAIL}
             USE_CERTBOT: ${USE_CERTBOT:-no}
-            SITE_GIT: ${SITE_GIT:-no}
+            SITE_GIT: ${SITE_GIT:-https://github.com/Snappsu/sz-drawpile.git}
+            SITE_GIT_BRANCH: ${-main}
         restart: unless-stopped
         ports:
             - "80:80"

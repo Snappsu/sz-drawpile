@@ -12,7 +12,7 @@ fi
 
 apk add git
 mkdir temp
-git clone "$SITE_GIT" temp
+git clone -b "$SITE_GIT_BRANCH" "$SITE_GIT" temp
 cd temp
 rm -rf .git
 cd ..
